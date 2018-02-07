@@ -1,34 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls_long_format.h                                :+:      :+:    :+:   */
+/*   ft_ls_readpath.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/17 16:34:11 by emartine          #+#    #+#             */
-/*   Updated: 2018/01/17 16:34:46 by emartine         ###   ########.fr       */
+/*   Created: 2018/01/17 17:42:41 by emartine          #+#    #+#             */
+/*   Updated: 2018/01/17 17:42:44 by emartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LS_LONG_FORMAT_H
-# define FT_LS_LONG_FORMAT_H
+#include "ft_ls_readpath.h"
+#include "main.h"
 
-/*
-** If directory is not null, full path is directory concatenated with
-** shown_path.
-*/
-
-void		ft_ls_long_format(char *argv0, char *directory, char *shown_path);
-
-struct		s_datetime
+void	ft_ls_readpath(char *argv0, int params, char *target)
 {
-	char	*day_name;
-	char	*month_name;
-	char	*day_number;
-	char	*hour;
-	char	*minute;
-	char	*second;
-	char	*year;
-};
-
-#endif
+}

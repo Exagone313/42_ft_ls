@@ -14,8 +14,10 @@
 #include <pwd.h>
 #include <grp.h>
 #include <sys/stat.h>
+#include <time.h>
 #include <unistd.h>
 #include "libft.h"
+#include "ft_ls_long_format.h"
 #include "ft_ls_error.h"
 #include "ft_ls_itoan.h"
 
@@ -112,11 +114,16 @@ static void		get_size(char *buffer, struct stat *stat_buffer)
 
 static void		get_datetime(char *buffer, struct stat *stat_buffer)
 {
-	size_t			i;
+	size_t				i;
+	//char	 			*datetime_initial;
+	//struct s_datetime	datetime;
+	//char				*datetime_output;
 
-	(void)stat_buffer;
+	(void)stat_buffer; // FIXME tmp
+	//datetime_initial = ctime(&(stat_buffer->st_mtim.tv_sec));
 	i = ft_strnlen(buffer, FT_LS_LONG_FORMAT_BUFFER_LENGTH);
 	buffer[i] = ' ';
+	//strncpy(buffer + i + 1, datetime_output,
 	strncpy(buffer + i + 1, "datetime",
 			FT_LS_LONG_FORMAT_BUFFER_LENGTH - (i + 1));
 }
@@ -142,7 +149,7 @@ void			ft_ls_long_format(char *argv0, char *directory,
 		ft_strncpy(full_path, directory, PATH_MAX);
 	ft_strncpy(full_path + ft_strnlen(full_path, PATH_MAX), shown_path,
 			PATH_MAX);
-	if (stat(full_path, &stat_buffer) < 0)
+	if (lstat(full_path, &stat_buffer) < 0)
 		ft_ls_error(argv0, shown_path);
 	else
 	{

@@ -10,15 +10,117 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_ls_long_format.h"
+#include <limits.h>
+#include <unistd.h>
+#include "libft.h"
+#include "ft_ls_readpath.h"
+#include "main.h"
+
+static int	parse_arg(char arg, int *result)
+{
+	if (arg == 'R')
+		*result |= PARAM_RECURSIVE;
+	else if (arg == 'l')
+		*result |= PARAM_LONG_FORMAT;
+	else if (arg == 'a')
+	{
+		*result |= PARAM_SHOW_ALL;
+		*result |= PARAM_SHOW_HIDDEN;
+	}
+	else if (arg == 'r')
+		*result |= PARAM_SORT_REVERSE;
+	else if (arg == 't')
+		*result |= PARAM_SORT_MTIME;
+	else if (arg == 'd')
+		*result |= PARAM_DIRECTORY;
+	else if (arg == 'A')
+		*result |= PARAM_SHOW_HIDDEN;
+	else
+		return (1);
+	return (0);
+}
+
+static int	parse_args(int argc, char **argv, int *dashptr)
+{
+	int		i;
+	int		j;
+	int		result;
+
+	result = 0;
+	i = 0;
+	while (i < argc)
+	{
+		if (argv[i][0] == '-')
+		{
+			if (argv[i][1] == '-' && argv[i][2] == '\0')
+			{
+				*dashptr = i;
+				return (result);
+			}
+			j = 1;
+			while (argv[i][j] != '\0')
+			{
+				if(parse_arg(argv[i][j], &result))
+					return (-argv[i][j]);
+				j++;
+			}
+		}
+		i++;
+	}
+	return (result);
+}
+
+#define INVALID_OPTION_STR ": invalid option -- '?'\n" \
+	"Available options: -a -A -d -l -r -R -t\n"
+
+static int	print_help(char *argv0, int params)
+{
+	char	ch;
+	char	buffer[NAME_MAX + sizeof(INVALID_OPTION_STR) + 1];
+	size_t	i;
+	size_t	l;
+	ssize_t	r;
+
+	if (params >= 0)
+		return (0);
+	ch = (char)-params;
+	ft_strncpy(buffer, argv0, NAME_MAX);
+	i = ft_strnlen(buffer, NAME_MAX);
+	ft_strncpy(buffer + i, INVALID_OPTION_STR, sizeof(INVALID_OPTION_STR));
+	buffer[i + 21] = ch;
+	l = ft_strnlen(buffer, NAME_MAX + sizeof(INVALID_OPTION_STR));
+	i = 0;
+	while (i < l)
+	{
+		r = write(2, buffer + i, l - i);
+		i += (unsigned)r;
+	}
+	return (1);
+}
 
 int		main(int argc, char **argv)
 {
-	char	*target;
+	int		params;
+	int		dash;
+	int		i;
 
-	if (argc > 1)
-		target = argv[1];
-	else
-		target = ".";
-	ft_ls_long_format(argv[0], 0, target);
+	dash = argc;
+	params = parse_args(argc, argv, &dash);
+	if (print_help(*argv, params))
+		return (1);
+	i = 1;
+	while (i < dash)
+	{
+		if (argv[i][0] != '-' || argv[i][1] == '\0')
+			ft_ls_readpath(*argv, params, argv[i]);
+		i++;
+	}
+	if (dash != argc)
+	{
+		i = dash + 1;
+		while (i < argc)
+			ft_ls_readpath(*argv, params, argv[i++]);
+	}
+	if (argc == 1)
+		ft_ls_readpath(*argv, params, argv[i]);
 }

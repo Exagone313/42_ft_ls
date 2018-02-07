@@ -1,34 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls_long_format.h                                :+:      :+:    :+:   */
+/*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/17 16:34:11 by emartine          #+#    #+#             */
-/*   Updated: 2018/01/17 16:34:46 by emartine         ###   ########.fr       */
+/*   Created: 2018/02/05 17:11:52 by emartine          #+#    #+#             */
+/*   Updated: 2018/02/05 19:57:15 by emartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LS_LONG_FORMAT_H
-# define FT_LS_LONG_FORMAT_H
+#ifndef MAIN_H
+# define MAIN_H
 
-/*
-** If directory is not null, full path is directory concatenated with
-** shown_path.
-*/
-
-void		ft_ls_long_format(char *argv0, char *directory, char *shown_path);
-
-struct		s_datetime
-{
-	char	*day_name;
-	char	*month_name;
-	char	*day_number;
-	char	*hour;
-	char	*minute;
-	char	*second;
-	char	*year;
-};
+# define PARAM_RECURSIVE	(1 << 0)
+# define PARAM_LONG_FORMAT	(1 << 1)
+# define PARAM_SHOW_ALL		(1 << 2)
+# define PARAM_SORT_REVERSE	(1 << 3)
+# define PARAM_SORT_MTIME	(1 << 4)
+# define PARAM_DIRECTORY	(1 << 5)
+# define PARAM_SHOW_HIDDEN	(1 << 6)
 
 #endif

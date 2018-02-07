@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls_long_format.h                                :+:      :+:    :+:   */
+/*   btree.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/17 16:34:11 by emartine          #+#    #+#             */
-/*   Updated: 2018/01/17 16:34:46 by emartine         ###   ########.fr       */
+/*   Created: 2018/01/17 17:42:41 by emartine          #+#    #+#             */
+/*   Updated: 2018/01/17 17:42:44 by emartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LS_LONG_FORMAT_H
-# define FT_LS_LONG_FORMAT_H
+#ifndef BTREE_H
+# define BTREE_H
 
-/*
-** If directory is not null, full path is directory concatenated with
-** shown_path.
-*/
+#include <stdlib.h>
 
-void		ft_ls_long_format(char *argv0, char *directory, char *shown_path);
+typedef struct s_btree	t_btree;
 
-struct		s_datetime
+struct					s_btree
 {
-	char	*day_name;
-	char	*month_name;
-	char	*day_number;
-	char	*hour;
-	char	*minute;
-	char	*second;
-	char	*year;
+	t_btree				*parent;
+	t_btree				*left;
+	t_btree				*right;
+	void				*data;
+	size_t				size;
 };
 
 #endif
