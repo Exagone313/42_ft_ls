@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/17 17:20:43 by emartine          #+#    #+#             */
-/*   Updated: 2018/01/17 17:20:45 by emartine         ###   ########.fr       */
+/*   Created: 2017/11/07 18:29:55 by emartine          #+#    #+#             */
+/*   Updated: 2017/11/07 18:29:57 by emartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
+#include "libft.h"
 
-# include <string.h>
+void				*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	char	*csrc;
+	char	*cdst;
 
-void	*ft_memcpy(void *dst, const void *src, size_t n);
-size_t	ft_strlen(const char *str);
-char	*ft_strncpy(char *dest, const char *src, size_t n);
-size_t	ft_strnlen(const char *str, size_t size);
-
-#endif
+	csrc = (char *)src;
+	cdst = (char *)dst;
+	while (n--)
+		*(cdst++) = *(csrc++);
+	return (dst);
+}

@@ -2,6 +2,8 @@ CFLAGS ?= -Wall -Wextra -Werror
 NAME ?= libft.a
 
 SRC := \
+	ft_memcpy.c \
+	ft_strlen.c \
 	ft_strncpy.c \
 	ft_strnlen.c
 
