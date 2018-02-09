@@ -26,4 +26,18 @@ struct					s_btree
 	size_t				size;
 };
 
+/*
+** t_btree_cmp acts like strcmp. Used to add elements in the tree.
+*/
+
+typedef int				(*t_btree_cmp)(const void *current_data,
+		size_t current_size, const void *child_data, size_t child_size);
+
+typedef void			(*t_btree_action)(t_btree *node, void *param);
+
+t_btree					*btree_create(void *srcdata, size_t size);
+void					btree_clean(t_btree **tree);
+void					btree_add(t_btree *tree, t_btree *child,
+		t_btree_cmp cmp);
+
 #endif
