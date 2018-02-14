@@ -12,7 +12,20 @@
 
 #include "btree.h"
 
-void	btree_add(t_btree *tree, t_btree *child, t_btree_cmp cmp)
+static int	progress(t_btree **current, t_btree **branch, t_btree *child)
+{
+	if (*branch != NULL)
+		*current = *branch;
+	else
+	{
+		*branch = child;
+		child->parent = *current;
+		return (1);
+	}
+	return (0);
+}
+
+void		btree_add(t_btree *tree, t_btree *child, t_btree_cmp cmp)
 {
 	t_btree	*current;
 
@@ -23,25 +36,13 @@ void	btree_add(t_btree *tree, t_btree *child, t_btree_cmp cmp)
 	{
 		if (cmp(current->data, current->size, child->data, child->size) >= 0)
 		{
-			if (current->left != NULL)
-				current = current->left;
-			else
-			{
-				current->left = child;
-				child->parent = current;
+			if (progress(&current, &(current->left), child))
 				return ;
-			}
 		}
 		else
 		{
-			if (current->right != NULL)
-				current = current->right;
-			else
-			{
-				current->right = child;
-				child->parent = current;
+			if (progress(&current, &(current->right), child))
 				return ;
-			}
 		}
 	}
 }

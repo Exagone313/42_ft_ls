@@ -39,5 +39,7 @@ t_btree					*btree_create(void *srcdata, size_t size);
 void					btree_clean(t_btree **tree);
 void					btree_add(t_btree *tree, t_btree *child,
 		t_btree_cmp cmp);
+void					btree_each(t_btree *tree, t_btree_action action,
+		void *param);
 
 #endif
