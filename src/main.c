@@ -98,7 +98,7 @@ static int	print_help(char *argv0, int params)
 	return (1);
 }
 
-int		main(int argc, char **argv)
+int		main(int argc, char **argv) // TODO file arguments are ordered in ls output!!!! so a loop like now may not be good
 {
 	int		params;
 	int		dash;
@@ -122,5 +122,5 @@ int		main(int argc, char **argv)
 			ft_ls_readpath(*argv, params, argv[i++]);
 	}
 	if (argc == 1)
-		ft_ls_readpath(*argv, params, argv[i]);
+		ft_ls_readpath(*argv, params, ".");
 }

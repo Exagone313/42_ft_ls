@@ -4,6 +4,7 @@ CFLAGS ?= -Wall -Wextra -Werror
 
 SRC := \
 	main.c \
+	ft_ls_readpath.c \
 	ft_ls_error.c \
 	ft_ls_long_format.c \
 	ft_ls_itoan.c

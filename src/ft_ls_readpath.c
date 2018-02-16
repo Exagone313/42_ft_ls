@@ -10,9 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+#include "libft.h"
 #include "ft_ls_readpath.h"
 #include "main.h"
 
 void	ft_ls_readpath(char *argv0, int params, char *target)
 {
+	(void)argv0;
+	(void)params;
+	write(1, target, ft_strlen(target));
+	write(1, "\n", 1);
 }
