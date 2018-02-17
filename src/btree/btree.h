@@ -13,7 +13,7 @@
 #ifndef BTREE_H
 # define BTREE_H
 
-#include <stdlib.h>
+# include <stdlib.h>
 
 typedef struct s_btree	t_btree;
 

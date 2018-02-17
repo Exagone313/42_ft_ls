@@ -18,9 +18,9 @@ t_btree		*btree_create(void *srcdata, size_t size)
 	t_btree		*tree;
 	char		*data;
 
-	if(!(data = malloc(size)))
+	if (!(data = malloc(size)))
 		return (NULL);
-	if(!(tree = malloc(sizeof(*tree))))
+	if (!(tree = malloc(sizeof(*tree))))
 	{
 		free(data);
 		return (NULL);

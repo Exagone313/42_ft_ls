@@ -16,6 +16,10 @@
 #include "ft_ls_readpath.h"
 #include "main.h"
 
+#define INVALID_OPTION_STR_1 ": invalid option -- '?'\n"
+#define INVALID_OPTION_STR_2 "Available options: -a -A -d -l -r -R -t\n"
+#define INVALID_OPTION_STR INVALID_OPTION_STR_1 INVALID_OPTION_STR_2
+
 static int	parse_arg(char arg, int *result)
 {
 	if (arg == 'R')
@@ -57,21 +61,15 @@ static int	parse_args(int argc, char **argv, int *dashptr)
 				*dashptr = i;
 				return (result);
 			}
-			j = 1;
-			while (argv[i][j] != '\0')
-			{
-				if(parse_arg(argv[i][j], &result))
+			j = 0;
+			while (argv[i][++j] != '\0')
+				if (parse_arg(argv[i][j], &result))
 					return (-argv[i][j]);
-				j++;
-			}
 		}
 		i++;
 	}
 	return (result);
 }
-
-#define INVALID_OPTION_STR ": invalid option -- '?'\n" \
-	"Available options: -a -A -d -l -r -R -t\n"
 
 static int	print_help(char *argv0, int params)
 {
@@ -98,7 +96,7 @@ static int	print_help(char *argv0, int params)
 	return (1);
 }
 
-int		main(int argc, char **argv) // TODO file arguments are ordered in ls output!!!! so a loop like now may not be good
+int			main(int argc, char **argv) // TODO file arguments are ordered in ls output!!!! so a loop like now may not be good
 {
 	int		params;
 	int		dash;

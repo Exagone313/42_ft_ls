@@ -31,7 +31,7 @@ static void	get_down(t_btree **current, t_btree **previous,
 	}
 }
 
-static void get_up(t_btree **current, t_btree **previous,
+static void	get_up(t_btree **current, t_btree **previous,
 		t_btree_action action, void *param)
 {
 	if ((*current)->left == *previous)
@@ -50,7 +50,7 @@ static void get_up(t_btree **current, t_btree **previous,
 	}
 }
 
-void	btree_each(t_btree *tree, t_btree_action action, void *param)
+void		btree_each(t_btree *tree, t_btree_action action, void *param)
 {
 	t_btree	*previous;
 	t_btree	*current;
