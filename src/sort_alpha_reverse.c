@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   sort_alpha_reverse.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/17 17:20:43 by emartine          #+#    #+#             */
-/*   Updated: 2018/01/17 17:20:45 by emartine         ###   ########.fr       */
+/*   Created: 2018/02/22 12:10:58 by emartine          #+#    #+#             */
+/*   Updated: 2018/02/22 12:11:00 by emartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
+#include "sort.h"
+#include "sort_alpha_handle.h"
 
-# include <string.h>
+int	sort_alpha_reverse(const void *current_data,
+		size_t current_size, const void *child_data, size_t child_size)
+{
+	t_fs_handle	*child;
+	t_fs_handle	*current;
 
-void	*ft_memcpy(void *dst, const void *src, size_t n);
-int		ft_strcmp(const char *s1, const char *s2);
-size_t	ft_strlen(const char *str);
-char	*ft_strncpy(char *dest, const char *src, size_t n);
-size_t	ft_strnlen(const char *str, size_t size);
-
-#endif
+	(void)child_size;
+	(void)current_size;
+	child = (t_fs_handle *)child_data;
+	current = (t_fs_handle *)current_data;
+	return (sort_alpha_handle(child, current));
+}

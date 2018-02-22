@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   sort_func.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/17 17:20:43 by emartine          #+#    #+#             */
-/*   Updated: 2018/01/17 17:20:45 by emartine         ###   ########.fr       */
+/*   Created: 2018/02/22 13:34:29 by emartine          #+#    #+#             */
+/*   Updated: 2018/02/22 13:34:31 by emartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
+#include "sort.h"
+#include "main.h"
 
-# include <string.h>
-
-void	*ft_memcpy(void *dst, const void *src, size_t n);
-int		ft_strcmp(const char *s1, const char *s2);
-size_t	ft_strlen(const char *str);
-char	*ft_strncpy(char *dest, const char *src, size_t n);
-size_t	ft_strnlen(const char *str, size_t size);
-
-#endif
+t_btree_cmp	sort_func(int params)
+{
+	if (params & PARAM_SORT_REVERSE)
+	{
+		if (params & PARAM_SORT_MTIME)
+			return (sort_mtime_reverse);
+		return (sort_alpha_reverse);
+	}
+	if (params & PARAM_SORT_MTIME)
+		return (sort_mtime);
+	return (sort_alpha);
+}
