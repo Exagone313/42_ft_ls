@@ -31,11 +31,14 @@ $(NAME): $(OBJ) libft/libft.a
 clean:
 	$(RM) $(OBJ) $(OBJ:.o=.d)
 
-fclean: clean
+fclean:
+	$(MAKE) clean
 	$(MAKE) -C libft fclean
 	$(RM) $(NAME)
 
-re: fclean all
+re:
+	$(MAKE) fclean
+	$(MAKE) all
 
 libft libft/libft.a:
 	$(MAKE) -C libft

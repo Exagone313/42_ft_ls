@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "sort.h"
+#include "compat.h"
 
 int	sort_mtime(const void *current_data,
 		size_t current_size, const void *child_data, size_t child_size)
