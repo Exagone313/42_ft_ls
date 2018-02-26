@@ -15,6 +15,7 @@
 #include "libft.h"
 #include "ft_ls_readpath.h"
 #include "main.h"
+#include "filesystem.h"
 
 #define INVALID_OPTION_STR_1 ": invalid option -- '?'\n"
 #define INVALID_OPTION_STR_2 "Available options: -a -A -d -l -r -R -t\n"
@@ -98,27 +99,29 @@ static int	print_help(char *argv0, int params)
 
 int			main(int argc, char **argv) // TODO file arguments are ordered in ls output!!!! so a loop like now may not be good
 {
-	int		params;
-	int		dash;
-	int		i;
+	int			params;
+	int			dash;
+	int			i;
+	t_args_tree	args;
 
 	dash = argc;
 	params = parse_args(argc, argv, &dash);
 	if (print_help(*argv, params))
 		return (1);
-	i = 1;
-	while (i < dash)
+	filesystem_initargs(&args, argv[0], params);
+	i = 0;
+	while (++i < dash)
 	{
 		if (argv[i][0] != '-' || argv[i][1] == '\0')
-			ft_ls_readpath(*argv, params, argv[i]);
-		i++;
+			filesystem_savearg(&args, argv[i]);
 	}
 	if (dash != argc)
 	{
 		i = dash + 1;
 		while (i < argc)
-			ft_ls_readpath(*argv, params, argv[i++]);
+			filesystem_savearg(&args, argv[i++]);
 	}
 	if (argc == 1)
-		ft_ls_readpath(*argv, params, ".");
+		filesystem_savearg(&args, ".");
+	filesystem_readargs(&args);
 }

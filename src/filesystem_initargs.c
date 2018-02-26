@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_alpha_handle.c                                :+:      :+:    :+:   */
+/*   filesystem_initargs.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/22 12:47:32 by emartine          #+#    #+#             */
-/*   Updated: 2018/02/22 12:47:34 by emartine         ###   ########.fr       */
+/*   Created: 2018/02/26 14:57:26 by emartine          #+#    #+#             */
+/*   Updated: 2018/02/26 14:57:28 by emartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "sort_alpha_handle.h"
+#include "filesystem.h"
+#include "sort.h"
 
-int			sort_alpha_handle(t_fs_handle *current, t_fs_handle *child)
+void			filesystem_initargs(t_args_tree *tree, char *argv0, int params)
 {
-	return (ft_strcmp(current->filename, child->filename));
+	tree->argv0 = argv0;
+	tree->params = params;
+	tree->sort = sort_func(params);
+	tree->tree = 0;
+	tree->length = 0;
 }
