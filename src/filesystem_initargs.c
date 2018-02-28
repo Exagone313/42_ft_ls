@@ -13,11 +13,12 @@
 #include "filesystem.h"
 #include "sort.h"
 
-void			filesystem_initargs(t_args_tree *tree, char *argv0, int params)
+void			filesystem_initargs(t_fs_tree *tree, char *argv0, int params)
 {
 	tree->argv0 = argv0;
 	tree->params = params;
 	tree->sort = sort_func(params);
 	tree->tree = 0;
 	tree->length = 0;
+	tree->args_tree = 1;
 }

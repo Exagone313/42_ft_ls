@@ -13,18 +13,26 @@
 #include <unistd.h>
 #include "libft.h"
 #include "filesystem.h"
+#include "main.h"
 
 static void	foreach_short(t_btree *node, void *param)
 {
 	t_fs_handle	*data;
+	t_fs_tree *tree;
 
-	(void)param;
+	tree = (t_fs_tree *)param;
 	data = (t_fs_handle	*)(node->data);
-	write(1, data->filename, ft_strlen(data->filename));
-	write(1, "\n", 1);
+	if (!tree->args_tree || !(data->stat.st_mode & S_IFDIR))
+	{
+		if (tree->params & PARAM_SHOW_ALL || data->filepath[0] != '.')
+		{
+			write(1, data->filepath, ft_strlen(data->filepath));
+			write(1, "\n", 1);
+		}
+	}
 }
 
-void		filesystem_readtree_short(t_btree *tree)
+void		filesystem_readtree_short(t_fs_tree *tree)
 {
-	btree_each(tree, foreach_short, 0);
+	btree_each(tree->tree, foreach_short, (void *)tree);
 }

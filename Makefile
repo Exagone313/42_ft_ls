@@ -10,6 +10,7 @@ SRC := \
 	main.c \
 	filesystem_initargs.c \
 	filesystem_readargs.c \
+	filesystem_readtree_directory.c \
 	filesystem_readtree_short.c \
 	filesystem_savearg.c \
 	ft_ls_readpath.c \

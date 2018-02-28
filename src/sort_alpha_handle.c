@@ -15,5 +15,5 @@
 
 int			sort_alpha_handle(t_fs_handle *current, t_fs_handle *child)
 {
-	return (ft_strcmp(current->filename, child->filename));
+	return (ft_strcmp(current->filepath, child->filepath));
 }

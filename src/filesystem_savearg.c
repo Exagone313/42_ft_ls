@@ -14,7 +14,7 @@
 #include "filesystem.h"
 #include "ft_ls_error.h"
 
-void			filesystem_savearg(t_args_tree *tree, char *arg)
+void			filesystem_savearg(t_fs_tree *tree, char *arg)
 {
 	t_fs_handle	hdl;
 	t_btree		*child;
@@ -23,13 +23,13 @@ void			filesystem_savearg(t_args_tree *tree, char *arg)
 		ft_ls_error(tree->argv0, arg);
 	else
 	{
-		hdl.path_prefix = 0;
-		// TODO prefix??
-		hdl.filename = arg;
+		hdl.filepath = arg;
 		child = btree_create(&hdl, sizeof(hdl));
 		if (!(tree->tree))
 			tree->tree = child;
 		else
 			btree_add(tree->tree, child, tree->sort);
+		if (child)
+			tree->length++;
 	}
 }

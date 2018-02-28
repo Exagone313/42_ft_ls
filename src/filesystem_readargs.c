@@ -12,8 +12,9 @@
 
 #include "filesystem.h"
 
-void			filesystem_readargs(t_args_tree *tree)
+void			filesystem_readargs(t_fs_tree *tree)
 {
-	filesystem_readtree_short(tree->tree);
+	filesystem_readtree_short(tree);
+	filesystem_readtree_directory(tree);
 	btree_clean(&(tree->tree));
 }

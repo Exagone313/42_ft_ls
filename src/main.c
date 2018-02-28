@@ -102,7 +102,7 @@ int			main(int argc, char **argv) // TODO file arguments are ordered in ls outpu
 	int			params;
 	int			dash;
 	int			i;
-	t_args_tree	args;
+	t_fs_tree	args;
 
 	dash = argc;
 	params = parse_args(argc, argv, &dash);
