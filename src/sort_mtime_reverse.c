@@ -16,18 +16,22 @@
 int	sort_mtime_reverse(const void *current_data,
 		size_t current_size, const void *child_data, size_t child_size)
 {
-	t_fs_handle	*child;
 	t_fs_handle	*current;
+	t_fs_handle	*child;
 
-	(void)child_size;
 	(void)current_size;
-	child = (t_fs_handle *)child_data;
+	(void)child_size;
 	current = (t_fs_handle *)current_data;
-	if (child->stat.st_mtimespec.tv_sec == current->stat.st_mtimespec.tv_sec)
+	child = (t_fs_handle *)child_data;
+	if (current->stat.st_mtimespec.tv_sec == child->stat.st_mtimespec.tv_sec)
 	{
-		return (child->stat.st_mtimespec.tv_nsec -
-				current->stat.st_mtimespec.tv_nsec);
+		if (current->stat.st_mtimespec.tv_nsec ==
+				child->stat.st_mtimespec.tv_nsec)
+			return (sort_alpha_reverse(current_data, current_size, child_data,
+						child_size));
+		return (current->stat.st_mtimespec.tv_nsec -
+				child->stat.st_mtimespec.tv_nsec);
 	}
-	return (child->stat.st_mtimespec.tv_sec -
-			current->stat.st_mtimespec.tv_sec);
+	return (current->stat.st_mtimespec.tv_sec -
+			child->stat.st_mtimespec.tv_sec);
 }

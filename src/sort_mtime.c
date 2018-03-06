@@ -16,18 +16,20 @@
 int	sort_mtime(const void *current_data,
 		size_t current_size, const void *child_data, size_t child_size)
 {
-	t_fs_handle	*current;
 	t_fs_handle	*child;
+	t_fs_handle	*current;
 
-	(void)current_size;
-	(void)child_size;
-	current = (t_fs_handle *)current_data;
 	child = (t_fs_handle *)child_data;
-	if (current->stat.st_mtimespec.tv_sec == child->stat.st_mtimespec.tv_sec)
+	current = (t_fs_handle *)current_data;
+	if (child->stat.st_mtimespec.tv_sec == current->stat.st_mtimespec.tv_sec)
 	{
-		return (current->stat.st_mtimespec.tv_nsec -
-				child->stat.st_mtimespec.tv_nsec);
+		if (child->stat.st_mtimespec.tv_nsec ==
+				current->stat.st_mtimespec.tv_nsec)
+			return (sort_alpha(current_data, current_size, child_data,
+						child_size));
+		return (child->stat.st_mtimespec.tv_nsec -
+				current->stat.st_mtimespec.tv_nsec);
 	}
-	return (current->stat.st_mtimespec.tv_sec -
-			child->stat.st_mtimespec.tv_sec);
+	return (child->stat.st_mtimespec.tv_sec -
+			current->stat.st_mtimespec.tv_sec);
 }
