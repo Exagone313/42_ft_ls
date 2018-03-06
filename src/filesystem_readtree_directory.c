@@ -15,12 +15,8 @@
 #include "libft.h"
 #include "filesystem.h"
 #include "ft_ls_error.h"
-
-static void	directory_prefix(t_fs_handle *data)
-{
-	write(1, data->filepath, ft_strlen(data->filepath));
-	write(1, ":\n", 2);
-}
+#include "main.h"
+#include "filesystem_readtree_directory.h"
 
 static void	directory_tree_add(t_fs_handle *parent, t_fs_tree *subtree,
 		struct dirent *ent)
@@ -61,6 +57,11 @@ static void	directory_read(t_fs_tree *tree, t_fs_handle *data)
 		directory_tree_add(data, &subtree, ent);
 	closedir(dir);
 	filesystem_readtree_short(&subtree);
+	if (tree->params & PARAM_RECURSIVE)
+	{
+		btree_each(subtree.tree, foreach_directory_prefix, (void *)data);
+		btree_each(subtree.tree, foreach_directory, (void *)&subtree);
+	}
 	btree_clean(&(subtree.tree));
 }
 
@@ -71,14 +72,45 @@ static void	foreach_directory(t_btree *node, void *param)
 
 	tree = (t_fs_tree *)param;
 	data = (t_fs_handle	*)(node->data);
-	if (data->stat.st_mode & S_IFDIR)
+	if (!data->hidden && data->stat.st_mode & S_IFDIR)
 	{
 		if (!(tree->level == 0) && (ft_strcmp(data->filepath, ".") == 0
 				|| ft_strcmp(data->filepath, "..") == 0))
 			return ;
 		if (tree->length > 1)
-			directory_prefix(data);
+		{
+			write(1, data->filepath, ft_strlen(data->filepath));
+			write(1, ":\n", 2);
+		}
 		directory_read(tree, data);
+	}
+}
+
+static void	foreach_directory_prefix(t_btree *node, void *param)
+{
+	t_fs_handle	*data;
+	t_fs_handle *parent;
+	char		filepath[PATH_MAX];
+	size_t		i;
+
+	parent = (t_fs_handle *)param;
+	data = (t_fs_handle	*)(node->data);
+	if (data->stat.st_mode & S_IFDIR)
+	{
+		if (ft_strcmp(data->filepath, ".") == 0
+				|| ft_strcmp(data->filepath, "..") == 0)
+			data->hidden = 1;
+		else
+		{
+			(void)filepath;
+			(void)i;
+			/*strncpy(filepath, data->filepath, PATH_MAX);
+			strncpy(data->filepath, parent->filepath, PATH_MAX);
+			i = ft_strlen(data->filepath);
+			strncpy(data->filepath + i, "/", PATH_MAX - i);
+			i = strlen(data->filepath);
+			strncpy(data->filepath + i, filepath, PATH_MAX - i);*/
+		}
 	}
 }
 

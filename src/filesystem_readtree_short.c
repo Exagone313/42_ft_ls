@@ -44,7 +44,7 @@ static void	foreach_short(t_btree *node, void *param)
 	{
 		if (!data->hidden)
 		{
-			if (tree->level == 1)
+			if (tree->level > 0)
 				filepath_name_write(data->filepath);
 			else
 				write(1, data->filepath, ft_strlen(data->filepath));
