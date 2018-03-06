@@ -15,6 +15,24 @@
 #include "filesystem.h"
 #include "main.h"
 
+static void	filepath_name_write(char *filepath)
+{
+	size_t	i;
+
+	i = 0;
+	while (filepath[i])
+	{
+		if (filepath[i] == '/')
+		{
+			filepath += i + 1;
+			i = 0;
+		}
+		else
+			i++;
+	}
+	write(1, filepath, ft_strlen(filepath));
+}
+
 static void	foreach_short(t_btree *node, void *param)
 {
 	t_fs_handle	*data;
@@ -22,11 +40,14 @@ static void	foreach_short(t_btree *node, void *param)
 
 	tree = (t_fs_tree *)param;
 	data = (t_fs_handle	*)(node->data);
-	if (!tree->args_tree || !(data->stat.st_mode & S_IFDIR))
+	if (!(tree->level == 0) || !(data->stat.st_mode & S_IFDIR))
 	{
-		if (tree->params & PARAM_SHOW_ALL || data->filepath[0] != '.')
+		if (!data->hidden)
 		{
-			write(1, data->filepath, ft_strlen(data->filepath));
+			if (tree->level == 1)
+				filepath_name_write(data->filepath);
+			else
+				write(1, data->filepath, ft_strlen(data->filepath));
 			write(1, "\n", 1);
 		}
 	}

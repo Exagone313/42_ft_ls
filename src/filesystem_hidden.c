@@ -1,35 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   filesystem_savearg.c                               :+:      :+:    :+:   */
+/*   filesystem_hidden.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/26 14:57:39 by emartine          #+#    #+#             */
-/*   Updated: 2018/02/26 14:57:41 by emartine         ###   ########.fr       */
+/*   Created: 2018/03/06 17:03:39 by emartine          #+#    #+#             */
+/*   Updated: 2018/03/06 17:03:41 by emartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/stat.h>
+#include "libft.h"
 #include "filesystem.h"
-#include "ft_ls_error.h"
+#include "main.h"
 
-void			filesystem_savearg(t_fs_tree *tree, char *arg)
+int		filesystem_hidden(int params, char *filename)
 {
-	t_fs_handle	hdl;
-	t_btree		*child;
-
-	if (lstat(arg, &(hdl.stat)) < 0)
-		ft_ls_error(tree->argv0, arg);
-	else
-	{
-		hdl.filepath = arg;
-		child = btree_create(&hdl, sizeof(hdl));
-		if (!(tree->tree))
-			tree->tree = child;
-		else
-			btree_add(tree->tree, child, tree->sort);
-		if (child)
-			tree->length++;
-	}
+	if (params & PARAM_SHOW_ALL)
+		return (0);
+	if (ft_strcmp(filename, ".") == 0 || ft_strcmp(filename, "..") == 0)
+		return (1);
+	return (!(params & PARAM_SHOW_HIDDEN) && filename[0] == '.');
 }

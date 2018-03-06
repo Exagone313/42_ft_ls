@@ -20,5 +20,5 @@ void			filesystem_initargs(t_fs_tree *tree, char *argv0, int params)
 	tree->sort = sort_func(params);
 	tree->tree = 0;
 	tree->length = 0;
-	tree->args_tree = 1;
+	tree->level = 0;
 }

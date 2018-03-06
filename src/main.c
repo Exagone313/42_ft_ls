@@ -113,15 +113,15 @@ int			main(int argc, char **argv) // TODO file arguments are ordered in ls outpu
 	while (++i < dash)
 	{
 		if (argv[i][0] != '-' || argv[i][1] == '\0')
-			filesystem_savearg(&args, argv[i]);
+			filesystem_savetree(&args, argv[i], 0);
 	}
 	if (dash != argc)
 	{
 		i = dash + 1;
 		while (i < argc)
-			filesystem_savearg(&args, argv[i++]);
+			filesystem_savetree(&args, argv[i++], 0);
 	}
 	if (args.length == 0)
-		filesystem_savearg(&args, ".");
+		filesystem_savetree(&args, ".", 0);
 	filesystem_readargs(&args);
 }

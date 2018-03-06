@@ -22,10 +22,25 @@ static void	directory_prefix(t_fs_handle *data)
 	write(1, ":\n", 2);
 }
 
-static void	directory_tree_add(t_fs_tree *subtree, struct dirent *ent)
+static void	directory_tree_add(t_fs_handle *parent, t_fs_tree *subtree,
+		struct dirent *ent)
 {
-	// TODO prefix
-	filesystem_savearg(subtree, ent->d_name);
+	char	filepath[PATH_MAX];
+	size_t	i;
+
+	if (filesystem_hidden(subtree->params, ent->d_name))
+		return ;
+	if (ft_strcmp(parent->filepath, ".") == 0)
+	{
+		filesystem_savetree(subtree, ent->d_name, 0);
+		return ;
+	}
+	strncpy(filepath, parent->filepath, PATH_MAX);
+	i = strlen(filepath);
+	strncpy(filepath + i, "/", PATH_MAX - i);
+	i = strlen(filepath);
+	strncpy(filepath + i, ent->d_name, PATH_MAX - i);
+	filesystem_savetree(subtree, filepath, 0);
 }
 
 static void	directory_read(t_fs_tree *tree, t_fs_handle *data)
@@ -41,12 +56,12 @@ static void	directory_read(t_fs_tree *tree, t_fs_handle *data)
 	subtree.sort = tree->sort;
 	subtree.tree = 0;
 	subtree.length = 0;
-	subtree.args_tree = 0;
+	subtree.level = tree->level + 1;
 	while ((ent = readdir(dir)) != 0)
-		directory_tree_add(&subtree, ent);
+		directory_tree_add(data, &subtree, ent);
+	closedir(dir);
 	filesystem_readtree_short(&subtree);
 	btree_clean(&(subtree.tree));
-	closedir(dir); // TODO do that before, need to copy names
 }
 
 static void	foreach_directory(t_btree *node, void *param)
@@ -58,6 +73,9 @@ static void	foreach_directory(t_btree *node, void *param)
 	data = (t_fs_handle	*)(node->data);
 	if (data->stat.st_mode & S_IFDIR)
 	{
+		if (!(tree->level == 0) && (ft_strcmp(data->filepath, ".") == 0
+				|| ft_strcmp(data->filepath, "..") == 0))
+			return ;
 		if (tree->length > 1)
 			directory_prefix(data);
 		directory_read(tree, data);

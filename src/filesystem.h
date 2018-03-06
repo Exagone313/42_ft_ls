@@ -14,6 +14,7 @@
 # define FILESYSTEM_H
 
 # include <sys/stat.h>
+# include <limits.h>
 # include "btree/btree.h"
 
 /*
@@ -28,13 +29,14 @@ typedef struct	s_fs_tree
 	t_btree		*tree;
 	t_btree_cmp	sort;
 	int			length;
-	int			args_tree;
+	int			level;
 }				t_fs_tree;
 
 typedef struct	s_fs_handle
 {
-	char		*filepath;
+	char		filepath[PATH_MAX + 1];
 	struct stat	stat;
+	int			hidden;
 }				t_fs_handle;
 
 /*
@@ -42,14 +44,14 @@ typedef struct	s_fs_handle
 */
 void			filesystem_initargs(t_fs_tree *tree, char *argv0, int params);
 /*
-** create a tree of arguments
-*/
-void			filesystem_savearg(t_fs_tree *tree, char *arg);
-/*
 ** take a tree of arguments and do the job
 */
 void			filesystem_readargs(t_fs_tree *tree);
 
+/*
+** create a tree of files
+*/
+void			filesystem_savetree(t_fs_tree *tree, char *arg, int hidden);
 /*
 ** read directories in a tree and adds prefix when necessary
 */
@@ -62,5 +64,9 @@ void			filesystem_readtree_short(t_fs_tree *tree);
 ** list files with long format
 */
 void			filesystem_readtree_long(t_fs_tree *tree);
+/*
+** check if file is hidden
+*/
+int				filesystem_hidden(int params, char *filename);
 
 #endif

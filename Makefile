@@ -8,11 +8,12 @@ SRC := \
 	btree/btree_create.c \
 	btree/btree_each.c \
 	main.c \
+	filesystem_hidden.c \
 	filesystem_initargs.c \
 	filesystem_readargs.c \
 	filesystem_readtree_directory.c \
 	filesystem_readtree_short.c \
-	filesystem_savearg.c \
+	filesystem_savetree.c \
 	ft_ls_readpath.c \
 	ft_ls_error.c \
 	ft_ls_long_format.c \
