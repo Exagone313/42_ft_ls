@@ -40,7 +40,7 @@ static int	parse_arg(char arg, int *result)
 		*result |= PARAM_DIRECTORY;
 	else if (arg == 'A')
 		*result |= PARAM_SHOW_HIDDEN;
-	else
+	else if (arg != '1')
 		return (1);
 	return (0);
 }
@@ -121,7 +121,7 @@ int			main(int argc, char **argv) // TODO file arguments are ordered in ls outpu
 		while (i < argc)
 			filesystem_savearg(&args, argv[i++]);
 	}
-	if (argc == 1)
+	if (args.length == 0)
 		filesystem_savearg(&args, ".");
 	filesystem_readargs(&args);
 }
