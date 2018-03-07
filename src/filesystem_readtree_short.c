@@ -48,6 +48,8 @@ static void	foreach_short(t_btree *node, void *param)
 			else
 				printer_str(&(tree->state->stdout), data->filepath);
 			printer_endl(&(tree->state->stdout));
+			if (!(tree->state->double_endl_prefix))
+				tree->state->double_endl_prefix = 1;
 		}
 	}
 }

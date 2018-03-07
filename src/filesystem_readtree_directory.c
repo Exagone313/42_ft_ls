@@ -77,6 +77,10 @@ static void	foreach_directory(t_btree *node, void *param)
 			return ;
 		if (tree->length > 1)
 		{
+			if (tree->state->double_endl_prefix)
+				printer_endl(&(tree->state->stdout));
+			else
+				tree->state->double_endl_prefix = 1;
 			printer_str(&(tree->state->stdout), data->filepath);
 			printer_bin(&(tree->state->stdout), ":\n", 2);
 		}

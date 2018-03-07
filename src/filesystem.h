@@ -25,6 +25,7 @@ typedef struct			s_ls_state
 	t_btree_cmp			sort;
 	t_printer_handle	stdout;
 	t_printer_handle	stderr;
+	int					double_endl_prefix;
 }						t_ls_state;
 
 /*

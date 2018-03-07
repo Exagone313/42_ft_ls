@@ -103,6 +103,7 @@ static int	hack_state(t_ls_state *state, char *argv0, int params)
 			return (1);
 		state->sort = sort_func(params);
 		printer_init(&(state->stdout), 1);
+		state->double_endl_prefix = 0;
 	}
 	else
 	{
