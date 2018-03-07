@@ -93,7 +93,6 @@ static void	foreach_directory_prefix(t_btree *node, void *param)
 	t_fs_handle	*data;
 	t_fs_handle *parent;
 	char		filepath[PATH_MAX];
-	size_t		i;
 
 	parent = (t_fs_handle *)param;
 	data = (t_fs_handle	*)(node->data);
@@ -102,16 +101,11 @@ static void	foreach_directory_prefix(t_btree *node, void *param)
 		if (ft_strcmp(data->filepath, ".") == 0
 				|| ft_strcmp(data->filepath, "..") == 0)
 			data->hidden = 1;
-		else
+		else if (ft_strcmp(parent->filepath, ".") == 0)
 		{
-			(void)filepath;
-			(void)i;
-			/*strncpy(filepath, data->filepath, PATH_MAX);
-			strncpy(data->filepath, parent->filepath, PATH_MAX);
-			i = ft_strlen(data->filepath);
-			strncpy(data->filepath + i, "/", PATH_MAX - i);
-			i = strlen(data->filepath);
-			strncpy(data->filepath + i, filepath, PATH_MAX - i);*/
+			memcpy(filepath, "./", 2);
+			ft_strncpy(filepath + 2, data->filepath, PATH_MAX);
+			ft_strncpy(data->filepath, filepath, PATH_MAX);
 		}
 	}
 }
