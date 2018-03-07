@@ -16,6 +16,7 @@
 #include "ft_ls_readpath.h"
 #include "main.h"
 #include "filesystem.h"
+#include "sort.h"
 
 #define INVALID_OPTION_STR_1 ": invalid option -- '?'\n"
 #define INVALID_OPTION_STR_2 "Available options: -a -A -d -l -r -R -t\n"
@@ -72,43 +73,56 @@ static int	parse_args(int argc, char **argv, int *dashptr)
 	return (result);
 }
 
-static int	print_help(char *argv0, int params)
+static int	print_help(t_ls_state *state)
 {
 	char	ch;
 	char	buffer[NAME_MAX + sizeof(INVALID_OPTION_STR) + 1];
-	size_t	i;
 	size_t	l;
-	ssize_t	r;
 
-	if (params >= 0)
+	if (state->params >= 0)
 		return (0);
-	ch = (char)-params;
-	ft_strncpy(buffer, argv0, NAME_MAX);
-	i = ft_strnlen(buffer, NAME_MAX);
-	ft_strncpy(buffer + i, INVALID_OPTION_STR, sizeof(INVALID_OPTION_STR));
-	buffer[i + 21] = ch;
+	ch = (char)-(state->params);
+	ft_strncpy(buffer, state->argv0, NAME_MAX);
+	l = ft_strnlen(buffer, NAME_MAX);
+	ft_strncpy(buffer + l, INVALID_OPTION_STR, sizeof(INVALID_OPTION_STR));
+	buffer[l + 21] = ch;
 	l = ft_strnlen(buffer, NAME_MAX + sizeof(INVALID_OPTION_STR));
-	i = 0;
-	while (i < l)
-	{
-		r = write(2, buffer + i, l - i);
-		i += (unsigned)r;
-	}
+	printer_bin(&(state->stderr), buffer, l);
+	printer_flush(&(state->stderr));
 	return (1);
 }
 
-int			main(int argc, char **argv) // TODO file arguments are ordered in ls output!!!! so a loop like now may not be good
+static int	hack_state(t_ls_state *state, char *argv0, int params)
 {
-	int			params;
+	if (argv0)
+	{
+		state->argv0 = argv0;
+		state->params = params;
+		printer_init(&(state->stderr), 2);
+		if (print_help(state))
+			return (1);
+		state->sort = sort_func(params);
+		printer_init(&(state->stdout), 1);
+	}
+	else
+	{
+		printer_flush(&(state->stdout));
+		printer_flush(&(state->stderr));
+	}
+	return (0);
+}
+
+int			main(int argc, char **argv)
+{
+	t_ls_state	state;
 	int			dash;
 	int			i;
 	t_fs_tree	args;
 
 	dash = argc;
-	params = parse_args(argc, argv, &dash);
-	if (print_help(*argv, params))
+	if (hack_state(&state, argv[0], parse_args(argc, argv, &dash)))
 		return (1);
-	filesystem_initargs(&args, argv[0], params);
+	filesystem_initargs(&args, &state);
 	i = 0;
 	while (++i < dash)
 	{
@@ -124,4 +138,5 @@ int			main(int argc, char **argv) // TODO file arguments are ordered in ls outpu
 	if (args.length == 0)
 		filesystem_savetree(&args, ".", 0);
 	filesystem_readargs(&args);
+	hack_state(&state, 0, 42);
 }

@@ -1,5 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
+/* ************************************************************************** *//*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   filesystem_readtree_short.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
@@ -15,7 +14,7 @@
 #include "filesystem.h"
 #include "main.h"
 
-static void	filepath_name_write(char *filepath)
+static void	filepath_name_write(t_ls_state *state, char *filepath)
 {
 	size_t	i;
 
@@ -30,7 +29,7 @@ static void	filepath_name_write(char *filepath)
 		else
 			i++;
 	}
-	write(1, filepath, ft_strlen(filepath));
+	printer_str(&(state->stdout), filepath);
 }
 
 static void	foreach_short(t_btree *node, void *param)
@@ -45,10 +44,10 @@ static void	foreach_short(t_btree *node, void *param)
 		if (!data->hidden)
 		{
 			if (tree->level > 0)
-				filepath_name_write(data->filepath);
+				filepath_name_write(tree->state, data->filepath);
 			else
-				write(1, data->filepath, ft_strlen(data->filepath));
-			write(1, "\n", 1);
+				printer_str(&(tree->state->stdout), data->filepath);
+			printer_endl(&(tree->state->stdout));
 		}
 	}
 }

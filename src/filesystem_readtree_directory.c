@@ -24,7 +24,7 @@ static void	directory_tree_add(t_fs_handle *parent, t_fs_tree *subtree,
 	char	filepath[PATH_MAX];
 	size_t	i;
 
-	if (filesystem_hidden(subtree->params, ent->d_name))
+	if (filesystem_hidden(subtree->state->params, ent->d_name))
 		return ;
 	if (ft_strcmp(parent->filepath, ".") == 0)
 	{
@@ -46,10 +46,8 @@ static void	directory_read(t_fs_tree *tree, t_fs_handle *data)
 	struct dirent *ent;
 
 	if (!(dir = opendir(data->filepath)))
-		ft_ls_error(tree->argv0, data->filepath);
-	subtree.argv0 = tree->argv0;
-	subtree.params = tree->params;
-	subtree.sort = tree->sort;
+		ft_ls_error(tree->state->argv0, data->filepath);
+	subtree.state = tree->state;
 	subtree.tree = 0;
 	subtree.length = 0;
 	subtree.level = tree->level + 1;
@@ -57,7 +55,7 @@ static void	directory_read(t_fs_tree *tree, t_fs_handle *data)
 		directory_tree_add(data, &subtree, ent);
 	closedir(dir);
 	filesystem_readtree_short(&subtree);
-	if (tree->params & PARAM_RECURSIVE)
+	if (tree->state->params & PARAM_RECURSIVE)
 	{
 		btree_each(subtree.tree, foreach_directory_prefix, (void *)data);
 		btree_each(subtree.tree, foreach_directory, (void *)&subtree);
@@ -79,8 +77,8 @@ static void	foreach_directory(t_btree *node, void *param)
 			return ;
 		if (tree->length > 1)
 		{
-			write(1, data->filepath, ft_strlen(data->filepath));
-			write(1, ":\n", 2);
+			printer_str(&(tree->state->stdout), data->filepath);
+			printer_bin(&(tree->state->stdout), ":\n", 2);
 		}
 		directory_read(tree, data);
 	}
