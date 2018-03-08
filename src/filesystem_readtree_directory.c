@@ -39,14 +39,11 @@ static void	directory_tree_add(t_fs_handle *parent, t_fs_tree *subtree,
 	filesystem_savetree(subtree, filepath, 0);
 }
 
-static void	directory_read(t_fs_tree *tree, t_fs_handle *data)
+static void	directory_read(t_fs_tree *tree, t_fs_handle *data, DIR *dir)
 {
-	DIR			*dir;
 	t_fs_tree	subtree;
 	struct dirent *ent;
 
-	if (!(dir = opendir(data->filepath)))
-		ft_ls_error(tree->state->argv0, data->filepath);
 	subtree.state = tree->state;
 	subtree.tree = 0;
 	subtree.length = 0;
@@ -66,17 +63,21 @@ static void	directory_read(t_fs_tree *tree, t_fs_handle *data)
 static void	foreach_directory(t_btree *node, void *param)
 {
 	t_fs_handle	*data;
-	t_fs_tree *tree;
+	t_fs_tree	*tree;
+	DIR			*dir;
 
 	tree = (t_fs_tree *)param;
 	data = (t_fs_handle	*)(node->data);
 	if (!data->hidden && data->stat.st_mode & S_IFDIR)
 	{
-		if (!(tree->level == 0) && (ft_strcmp(data->filepath, ".") == 0
+		if (tree->level > 0 && (ft_strcmp(data->filepath, ".") == 0
 				|| ft_strcmp(data->filepath, "..") == 0))
 			return ;
-		//if (tree->length > 1) // FIXME
-		//if (ft_strcmp(data->filepath, ".") != 0) // FIXME
+		if (!(dir = opendir(data->filepath)))
+		{
+			ft_ls_error(tree->state->argv0, data->filepath);
+			return ;
+		}
 		if (tree->level > 0 || tree->length > 1) // FIXME
 		{
 			if (tree->state->double_endl_prefix)
@@ -86,7 +87,7 @@ static void	foreach_directory(t_btree *node, void *param)
 			printer_str(&(tree->state->stdout), data->filepath);
 			printer_bin(&(tree->state->stdout), ":\n", 2);
 		}
-		directory_read(tree, data);
+		directory_read(tree, data, dir);
 	}
 }
 
