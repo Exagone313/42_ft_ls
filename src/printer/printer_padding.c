@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printer_uint.c                                     :+:      :+:    :+:   */
+/*   printer_padding.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/07 16:36:12 by emartine          #+#    #+#             */
-/*   Updated: 2018/03/07 16:36:14 by emartine         ###   ########.fr       */
+/*   Created: 2018/03/08 18:46:46 by emartine          #+#    #+#             */
+/*   Updated: 2018/03/08 18:46:47 by emartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printer.h"
-#include "printer_private.h"
 
-void	printer_uint(t_printer_handle *handle, unsigned int n)
+void	printer_padding(t_printer_handle *handle, size_t size,
+		const t_padding *pad)
 {
-	char	buffer[10];
-	size_t	length;
 	size_t	i;
 
-	length = printer_uint_length(n);
-	if (length > 10)
-		return ;
-	i = length;
-	while (i--)
-	{
-		buffer[i] = '0' + n % 10;
-		n /= 10;
-	}
-	printer_bin(handle, buffer, length);
+	i = pad->size - size;
+	while (i-- > 0)
+		printer_char(handle, pad->ch);
 }

@@ -47,38 +47,47 @@ void			printer_char(t_printer_handle *handle, char ch);
 void			printer_endl(t_printer_handle *handle);
 
 /*
-** functions that add spaces before or after the following types (padding)
-** pad is the total number of characters that will be output by the function
+** functions that add a certain number of t_padding.ch characters
+** before or after the following types (padding)
 **
-** padding left or right means that spaces are added respectively before
-** or after the second parameter value to output pad characters
+** t_padding.size is the total number of characters that will be output by
+** the function
 **
-** the second parameter value is expected to fit in the padding
+** padding left or right means that the t_padding.ch characters are added
+** respectively before or after the value
+**
+** the value is expected to fit in the padding
 */
+typedef struct	s_padding
+{
+	size_t		size;
+	char		ch;
+}				t_padding;
+
 void			printer_str_padding_left(t_printer_handle *handle, char *str,
-		size_t pad);
+		const t_padding pad);
 void			printer_bin_padding_left(t_printer_handle *handle, char *bin,
-		size_t size, size_t pad);
+		size_t size, const t_padding pad);
 void			printer_int_padding_left(t_printer_handle *handle, int n,
-		size_t pad);
+		const t_padding pad);
 void			printer_uint_padding_left(t_printer_handle *handle,
-		unsigned int n, size_t pad);
+		unsigned int n, const t_padding pad);
 void			printer_long_padding_left(t_printer_handle *handle, long l,
-		size_t pad);
+		const t_padding pad);
 void			printer_ulong_padding_left(t_printer_handle *handle,
-		unsigned long l, size_t pad);
+		unsigned long l, const t_padding pad);
 
 void			printer_str_padding_right(t_printer_handle *handle, char *str,
-		size_t pad);
+		const t_padding pad);
 void			printer_bin_padding_right(t_printer_handle *handle, char *bin,
-		size_t size, size_t pad);
+		size_t size, const t_padding pad);
 void			printer_int_padding_right(t_printer_handle *handle, int n,
-		size_t pad);
+		const t_padding pad);
 void			printer_uint_padding_right(t_printer_handle *handle,
-		unsigned int n, size_t pad);
+		unsigned int n, const t_padding pad);
 void			printer_long_padding_right(t_printer_handle *handle, long l,
-		size_t pad);
+		const t_padding pad);
 void			printer_ulong_padding_right(t_printer_handle *handle,
-		unsigned long l, size_t pad);
+		unsigned long l, const t_padding pad);
 
 #endif

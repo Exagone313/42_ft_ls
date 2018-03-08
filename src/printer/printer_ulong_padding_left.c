@@ -1,32 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printer_uint.c                                     :+:      :+:    :+:   */
+/*   printer_ulong_padding_left.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/07 16:36:12 by emartine          #+#    #+#             */
-/*   Updated: 2018/03/07 16:36:14 by emartine         ###   ########.fr       */
+/*   Created: 2018/03/08 19:07:25 by emartine          #+#    #+#             */
+/*   Updated: 2018/03/08 19:07:27 by emartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printer.h"
 #include "printer_private.h"
 
-void	printer_uint(t_printer_handle *handle, unsigned int n)
+void	printer_ulong_padding_left(t_printer_handle *handle, unsigned long l,
+		const t_padding pad)
 {
-	char	buffer[10];
-	size_t	length;
-	size_t	i;
-
-	length = printer_uint_length(n);
-	if (length > 10)
-		return ;
-	i = length;
-	while (i--)
-	{
-		buffer[i] = '0' + n % 10;
-		n /= 10;
-	}
-	printer_bin(handle, buffer, length);
+	printer_padding(handle, printer_ulong_length(l), &pad);
+	printer_ulong(handle, l);
 }

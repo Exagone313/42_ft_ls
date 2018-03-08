@@ -11,28 +11,16 @@
 /* ************************************************************************** */
 
 #include "printer.h"
+#include "printer_private.h"
 
-static size_t	nbr_length(int nbr)
-{
-	size_t	length;
-
-	length = nbr < 0 ? 2 : 1;
-	while (nbr < -9 || nbr > 9)
-	{
-		length++;
-		nbr /= 10;
-	}
-	return (length);
-}
-
-void			printer_int(t_printer_handle *handle, int n)
+void	printer_int(t_printer_handle *handle, int n)
 {
 	char	buffer[6];
 	char	*bufferptr;
 	size_t	length;
 	size_t	i;
 
-	length = nbr_length(n);
+	length = printer_int_length(n);
 	if (length > 6)
 		return ;
 	i = length;

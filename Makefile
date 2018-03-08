@@ -19,15 +19,29 @@ SRC := \
 	ft_ls_long_format.c \
 	ft_ls_itoan.c \
 	printer/printer_bin.c \
+	printer/printer_bin_padding_left.c \
+	printer/printer_bin_padding_right.c \
 	printer/printer_char.c \
 	printer/printer_endl.c \
 	printer/printer_flush.c \
 	printer/printer_init.c \
 	printer/printer_int.c \
+	printer/printer_int_padding_left.c \
+	printer/printer_int_padding_right.c \
 	printer/printer_long.c \
+	printer/printer_long_padding_left.c \
+	printer/printer_long_padding_right.c \
+	printer/printer_numeric_length.c \
+	printer/printer_padding.c \
 	printer/printer_str.c \
+	printer/printer_str_padding_left.c \
+	printer/printer_str_padding_right.c \
 	printer/printer_uint.c \
+	printer/printer_uint_padding_left.c \
+	printer/printer_uint_padding_right.c \
 	printer/printer_ulong.c \
+	printer/printer_ulong_padding_left.c \
+	printer/printer_ulong_padding_right.c \
 	sort_alpha.c \
 	sort_alpha_handle.c \
 	sort_alpha_reverse.c \
