@@ -26,6 +26,7 @@ typedef struct			s_ls_state
 	t_printer_handle	stdout;
 	t_printer_handle	stderr;
 	int					double_endl_prefix;
+	int					arg_error;
 }						t_ls_state;
 
 /*

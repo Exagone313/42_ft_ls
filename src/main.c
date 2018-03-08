@@ -104,6 +104,7 @@ static int	hack_state(t_ls_state *state, char *argv0, int params)
 		state->sort = sort_func(params);
 		printer_init(&(state->stdout), 1);
 		state->double_endl_prefix = 0;
+		state->arg_error = 0;
 	}
 	else
 	{
@@ -136,7 +137,7 @@ int			main(int argc, char **argv)
 		while (i < argc)
 			filesystem_savetree(&args, argv[i++], 0);
 	}
-	if (args.length == 0)
+	if (args.length == 0 && state.arg_error == 0)
 		filesystem_savetree(&args, ".", 0);
 	filesystem_readargs(&args);
 	hack_state(&state, 0, 42);

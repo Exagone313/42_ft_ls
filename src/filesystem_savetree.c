@@ -24,7 +24,11 @@ void			filesystem_savetree(t_fs_tree *tree, char *arg, int hidden)
 	t_btree		*child;
 
 	if (lstat(arg, &(hdl.stat)) < 0)
+	{
+		if (tree->level == 0 && !(tree->state->arg_error))
+			tree->state->arg_error = 1;
 		ft_ls_error(tree->state->argv0, arg);
+	}
 	else
 	{
 		ft_strncpy(hdl.filepath, arg, PATH_MAX);

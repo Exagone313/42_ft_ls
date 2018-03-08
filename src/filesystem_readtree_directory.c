@@ -75,7 +75,9 @@ static void	foreach_directory(t_btree *node, void *param)
 		if (!(tree->level == 0) && (ft_strcmp(data->filepath, ".") == 0
 				|| ft_strcmp(data->filepath, "..") == 0))
 			return ;
-		if (tree->length > 1)
+		//if (tree->length > 1) // FIXME
+		//if (ft_strcmp(data->filepath, ".") != 0) // FIXME
+		if (tree->level > 0 || tree->length > 1) // FIXME
 		{
 			if (tree->state->double_endl_prefix)
 				printer_endl(&(tree->state->stdout));
