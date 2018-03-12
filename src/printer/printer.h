@@ -90,4 +90,24 @@ void			printer_long_padding_right(t_printer_handle *handle, long l,
 void			printer_ulong_padding_right(t_printer_handle *handle,
 		unsigned long l, const t_padding pad);
 
+/*
+** internal functions
+*/
+
+/*
+** numeric types length
+*/
+size_t			printer_int_length(int nbr);
+size_t			printer_uint_length(unsigned int nbr);
+size_t			printer_long_length(long nbr);
+size_t			printer_ulong_length(unsigned long nbr);
+
+/*
+** show padding
+**
+** (t_padding.size - size) t_padding.ch characters are output
+*/
+void			printer_padding(t_printer_handle *handle, size_t size,
+		const t_padding *pad);
+
 #endif

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "printer.h"
-#include "printer_private.h"
 
 void	printer_long(t_printer_handle *handle, long l)
 {

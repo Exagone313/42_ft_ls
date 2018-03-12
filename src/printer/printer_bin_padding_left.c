@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "printer.h"
-#include "printer_private.h"
 
 void	printer_bin_padding_left(t_printer_handle *handle, char *bin,
 		size_t size, const t_padding pad)

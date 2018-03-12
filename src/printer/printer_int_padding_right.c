@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "printer.h"
-#include "printer_private.h"
 
 void	printer_int_padding_right(t_printer_handle *handle, int n,
 		const t_padding pad)

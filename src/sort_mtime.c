@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "sort.h"
-#include "compat.h"
 
 int	sort_mtime(const void *current_data,
 		size_t current_size, const void *child_data, size_t child_size)
@@ -25,8 +24,10 @@ int	sort_mtime(const void *current_data,
 	{
 		if (child->stat.st_mtimespec.tv_nsec ==
 				current->stat.st_mtimespec.tv_nsec)
+		{
 			return (sort_alpha(current_data, current_size, child_data,
 						child_size));
+		}
 		return (child->stat.st_mtimespec.tv_nsec -
 				current->stat.st_mtimespec.tv_nsec);
 	}

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printer_private.h"
+#include "printer.h"
 
 size_t	printer_int_length(int nbr)
 {

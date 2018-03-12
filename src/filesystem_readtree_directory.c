@@ -41,11 +41,19 @@ static void	directory_tree_add(t_fs_handle *parent, t_fs_tree *subtree,
 
 static void	directory_read(t_fs_tree *tree, t_fs_handle *data, DIR *dir)
 {
-	t_fs_tree	subtree;
-	struct dirent *ent;
+	t_fs_tree		subtree;
+	struct dirent	*ent;
 
+	if ((subtree.tree = 0) || tree->level > 0 || tree->length > 1)
+	{
+		if (tree->state->double_endl_prefix)
+			printer_endl(&(tree->state->stdout));
+		else
+			tree->state->double_endl_prefix = 1;
+		printer_str(&(tree->state->stdout), data->filepath);
+		printer_bin(&(tree->state->stdout), ":\n", 2);
+	}
 	subtree.state = tree->state;
-	subtree.tree = 0;
 	subtree.length = 0;
 	subtree.level = tree->level + 1;
 	while ((ent = readdir(dir)) != 0)
@@ -77,15 +85,6 @@ static void	foreach_directory(t_btree *node, void *param)
 		{
 			ft_ls_error(tree->state->argv0, data->filepath);
 			return ;
-		}
-		if (tree->level > 0 || tree->length > 1) // FIXME
-		{
-			if (tree->state->double_endl_prefix)
-				printer_endl(&(tree->state->stdout));
-			else
-				tree->state->double_endl_prefix = 1;
-			printer_str(&(tree->state->stdout), data->filepath);
-			printer_bin(&(tree->state->stdout), ":\n", 2);
 		}
 		directory_read(tree, data, dir);
 	}

@@ -1,11 +1,12 @@
-/* ************************************************************************** *//*                                                                            */
+/* ************************************************************************** */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   filesystem_readtree_short.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 13:38:32 by emartine          #+#    #+#             */
-/*   Updated: 2018/02/26 13:38:34 by emartine         ###   ########.fr       */
+/*   Updated: 2018/03/12 15:46:02 by emartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +36,11 @@ static void	filepath_name_write(t_ls_state *state, char *filepath)
 static void	foreach_short(t_btree *node, void *param)
 {
 	t_fs_handle	*data;
-	t_fs_tree *tree;
+	t_fs_tree	*tree;
 
 	tree = (t_fs_tree *)param;
 	data = (t_fs_handle	*)(node->data);
-	if (!(tree->level == 0) || !(data->stat.st_mode & S_IFDIR))
+	if (tree->level != 0 || !(data->stat.st_mode & S_IFDIR))
 	{
 		if (!data->hidden)
 		{

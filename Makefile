@@ -16,7 +16,6 @@ SRC := \
 	filesystem_savetree.c \
 	ft_ls_readpath.c \
 	ft_ls_error.c \
-	ft_ls_long_format.c \
 	ft_ls_itoan.c \
 	printer/printer_bin.c \
 	printer/printer_bin_padding_left.c \
@@ -52,6 +51,10 @@ SRC := \
 OBJ := $(addprefix src/,$(SRC:.c=.o))
 
 CFLAGS += -MMD -MP -Ilibft
+
+ifneq (, $(findstring linux, $(shell $(CC) -dumpmachine)))
+	CFLAGS += -Dst_mtimespec=st_mtim
+endif
 
 .PHONY: all clean fclean re libft
 
