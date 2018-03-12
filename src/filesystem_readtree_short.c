@@ -40,7 +40,7 @@ static void	foreach_short(t_btree *node, void *param)
 
 	tree = (t_fs_tree *)param;
 	data = (t_fs_handle	*)(node->data);
-	if (tree->level != 0 || !(data->stat.st_mode & S_IFDIR))
+	if (tree->level > 0 || !(data->stat.st_mode & S_IFDIR))
 	{
 		if (!data->hidden)
 		{
@@ -57,5 +57,6 @@ static void	foreach_short(t_btree *node, void *param)
 
 void		filesystem_readtree_short(t_fs_tree *tree)
 {
-	btree_each(tree->tree, foreach_short, (void *)tree);
+	if (tree->length > 0)
+		btree_each(tree->tree, foreach_short, (void *)tree);
 }

@@ -15,6 +15,7 @@
 
 # include <sys/stat.h>
 # include <limits.h>
+# include <dirent.h>
 # include "btree/btree.h"
 # include "printer/printer.h"
 
@@ -66,6 +67,8 @@ void					filesystem_savetree(t_fs_tree *tree, char *arg,
 ** read directories in a tree and adds prefix when necessary
 */
 void					filesystem_readtree_directory(t_fs_tree *tree);
+void					filesystem_subtree(t_fs_tree *subtree, t_fs_tree *tree,
+		t_fs_handle *data, DIR *dir);
 /*
 ** list files with short format
 */
@@ -74,6 +77,15 @@ void					filesystem_readtree_short(t_fs_tree *tree);
 ** list files with long format
 */
 void					filesystem_readtree_long(t_fs_tree *tree);
+typedef struct			s_ls_long
+{
+	t_fs_tree			*tree;
+	size_t				total;
+	size_t				max_links;
+	size_t				max_user_length;
+	size_t				max_group_length;
+	size_t				max_size;
+}						t_ls_long;
 /*
 ** check if file is hidden
 */

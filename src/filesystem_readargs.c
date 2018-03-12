@@ -11,10 +11,14 @@
 /* ************************************************************************** */
 
 #include "filesystem.h"
+#include "main.h"
 
 void			filesystem_readargs(t_fs_tree *tree)
 {
-	filesystem_readtree_short(tree);
+	if (tree->state->params & PARAM_LONG_FORMAT)
+		filesystem_readtree_long(tree);
+	else
+		filesystem_readtree_short(tree);
 	filesystem_readtree_directory(tree);
 	btree_clean(&(tree->tree));
 }

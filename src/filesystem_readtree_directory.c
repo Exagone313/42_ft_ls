@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <dirent.h>
 #include <unistd.h>
 #include "libft.h"
 #include "filesystem.h"
@@ -18,33 +17,11 @@
 #include "main.h"
 #include "filesystem_readtree_directory.h"
 
-static void	directory_tree_add(t_fs_handle *parent, t_fs_tree *subtree,
-		struct dirent *ent)
-{
-	char	filepath[PATH_MAX];
-	size_t	i;
-
-	if (filesystem_hidden(subtree->state->params, ent->d_name))
-		return ;
-	if (ft_strcmp(parent->filepath, ".") == 0)
-	{
-		filesystem_savetree(subtree, ent->d_name, 0);
-		return ;
-	}
-	strncpy(filepath, parent->filepath, PATH_MAX);
-	i = strlen(filepath);
-	strncpy(filepath + i, "/", PATH_MAX - i);
-	i = strlen(filepath);
-	strncpy(filepath + i, ent->d_name, PATH_MAX - i);
-	filesystem_savetree(subtree, filepath, 0);
-}
-
 static void	directory_read(t_fs_tree *tree, t_fs_handle *data, DIR *dir)
 {
-	t_fs_tree		subtree;
-	struct dirent	*ent;
+	t_fs_tree	subtree;
 
-	if ((subtree.tree = 0) || tree->level > 0 || tree->length > 1)
+	if (tree->level > 0 || tree->length > 1)
 	{
 		if (tree->state->double_endl_prefix)
 			printer_endl(&(tree->state->stdout));
@@ -53,13 +30,11 @@ static void	directory_read(t_fs_tree *tree, t_fs_handle *data, DIR *dir)
 		printer_str(&(tree->state->stdout), data->filepath);
 		printer_bin(&(tree->state->stdout), ":\n", 2);
 	}
-	subtree.state = tree->state;
-	subtree.length = 0;
-	subtree.level = tree->level + 1;
-	while ((ent = readdir(dir)) != 0)
-		directory_tree_add(data, &subtree, ent);
-	closedir(dir);
-	filesystem_readtree_short(&subtree);
+	filesystem_subtree(&subtree, tree, data, dir);
+	if (tree->state->params & PARAM_LONG_FORMAT)
+		filesystem_readtree_long(&subtree);
+	else
+		filesystem_readtree_short(&subtree);
 	if (tree->state->params & PARAM_RECURSIVE)
 	{
 		btree_each(subtree.tree, foreach_directory_prefix, (void *)data);

@@ -12,8 +12,11 @@ SRC := \
 	filesystem_initargs.c \
 	filesystem_readargs.c \
 	filesystem_readtree_directory.c \
+	filesystem_readtree_long.c \
+	filesystem_readtree_long_aux.c \
 	filesystem_readtree_short.c \
 	filesystem_savetree.c \
+	filesystem_subtree.c \
 	ft_ls_readpath.c \
 	ft_ls_error.c \
 	ft_ls_itoan.c \
