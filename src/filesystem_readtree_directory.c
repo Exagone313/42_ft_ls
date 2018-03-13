@@ -48,7 +48,7 @@ static void	foreach_directory(t_btree *node, void *param)
 
 	tree = (t_fs_tree *)param;
 	data = (t_fs_handle	*)(node->data);
-	if (!data->hidden && data->stat.st_mode & S_IFDIR)
+	if (!data->hidden && (data->stat.st_mode & S_IFMT) == S_IFDIR)
 	{
 		if (tree->level > 0
 				&& (ft_strcmp(filesystem_basename(data->filepath), ".") == 0
