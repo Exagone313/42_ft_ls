@@ -16,6 +16,7 @@
 # include <sys/stat.h>
 # include <limits.h>
 # include <dirent.h>
+# include <sys/types.h>
 # include "btree/btree.h"
 # include "printer/printer.h"
 
@@ -84,7 +85,9 @@ typedef struct			s_ls_long
 	size_t				max_links;
 	size_t				max_user_length;
 	size_t				max_group_length;
-	size_t				max_size;
+	ssize_t				max_size;
+	ssize_t				max_major;
+	ssize_t				max_minor;
 }						t_ls_long;
 /*
 ** check if file is hidden

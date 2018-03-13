@@ -73,47 +73,60 @@ static void	print_mode(t_ls_state *state, mode_t mode)
 	printer_bin(&(state->stdout), "  ", 2);
 }
 
-static void	print_datetime(t_ls_state *state, t_fs_handle *handle)
+static void	print_part2(t_ls_long *long_state, t_fs_handle *data,
+		t_padding *pad)
 {
 	time_t	now;
 	char	*dtstr;
 
-	printer_char(&(state->stdout), ' ');
+	if ((data->stat.st_mode & S_IFMT) == S_IFCHR
+			|| (data->stat.st_mode & S_IFMT) == S_IFBLK)
+		printer_long_padding_left(&(long_state->tree->state->stdout),
+				minor(data->stat.st_rdev), *pad);
+	else
+		printer_long_padding_left(&(long_state->tree->state->stdout),
+				data->stat.st_size, *pad);
+	printer_char(&(long_state->tree->state->stdout), ' ');
 	now = time(NULL);
-	dtstr = ctime(&(handle->stat.st_mtimespec.tv_sec));
-	if (now - SIXMONTHS < handle->stat.st_mtimespec.tv_sec
-			&& now + SIXMONTHS > handle->stat.st_mtimespec.tv_sec)
-		printer_bin(&(state->stdout), dtstr + 4, 12);
+	dtstr = ctime(&(data->stat.st_mtimespec.tv_sec));
+	if (now - SIXMONTHS < data->stat.st_mtimespec.tv_sec
+			&& now + SIXMONTHS > data->stat.st_mtimespec.tv_sec)
+		printer_bin(&(long_state->tree->state->stdout), dtstr + 4, 12);
 	else
 	{
-		printer_bin(&(state->stdout), dtstr + 4, 7);
-		printer_bin(&(state->stdout), dtstr + 19, 5);
+		printer_bin(&(long_state->tree->state->stdout), dtstr + 4, 7);
+		printer_bin(&(long_state->tree->state->stdout), dtstr + 19, 5);
 	}
-	printer_char(&(state->stdout), ' ');
+	printer_char(&(long_state->tree->state->stdout), ' ');
 }
 
-static void	print_user_group(t_ls_long *long_state, t_fs_handle *data)
+static void	print_part1(t_ls_long *long_state, t_fs_handle *data,
+		t_padding *pad)
 {
 	struct passwd	*passwd;
 	struct group	*group;
-	t_padding		pad;
 
-	pad.ch = ' ';
-	pad.size = long_state->max_user_length;
+	print_mode(long_state->tree->state, data->stat.st_mode);
+	pad->size = printer_ulong_length(long_state->max_links);
+	printer_ulong_padding_left(&(long_state->tree->state->stdout),
+			data->stat.st_nlink, *pad);
+	printer_char(&(long_state->tree->state->stdout), ' ');
+	pad->size = long_state->max_user_length;
 	if ((passwd = getpwuid(data->stat.st_uid)))
 		printer_str_padding_right(&(long_state->tree->state->stdout),
-				passwd->pw_name, pad);
+				passwd->pw_name, *pad);
 	else
 		printer_uint_padding_right(&(long_state->tree->state->stdout),
-				data->stat.st_uid, pad);
+				data->stat.st_uid, *pad);
 	printer_bin(&(long_state->tree->state->stdout), "  ", 2);
-	pad.size = long_state->max_group_length;
+	pad->size = long_state->max_group_length;
 	if ((group = getgrgid(data->stat.st_gid)))
 		printer_str_padding_right(&(long_state->tree->state->stdout),
-				group->gr_name, pad);
+				group->gr_name, *pad);
 	else
 		printer_uint_padding_right(&(long_state->tree->state->stdout),
-				data->stat.st_gid, pad);
+				data->stat.st_gid, *pad);
+	printer_bin(&(long_state->tree->state->stdout), "  ", 2);
 }
 
 void		filesystem_readtree_long_aux(t_ls_long *long_state,
@@ -122,15 +135,26 @@ void		filesystem_readtree_long_aux(t_ls_long *long_state,
 	t_padding		pad;
 
 	pad.ch = ' ';
-	print_mode(long_state->tree->state, data->stat.st_mode);
-	pad.size = printer_ulong_length(long_state->max_links);
-	printer_ulong_padding_left(&(long_state->tree->state->stdout),
-			data->stat.st_nlink, pad);
-	printer_char(&(long_state->tree->state->stdout), ' ');
-	print_user_group(long_state, data);
-	printer_bin(&(long_state->tree->state->stdout), "  ", 2);
-	pad.size = printer_ulong_length(long_state->max_size);
-	printer_ulong_padding_left(&(long_state->tree->state->stdout),
-			data->stat.st_size, pad);
-	print_datetime(long_state->tree->state, data);
+	print_part1(long_state, data, &pad);
+	if (long_state->max_major >= 0)
+	{
+		printer_char(&(long_state->tree->state->stdout), ' ');
+		pad.size = printer_long_length(long_state->max_major);
+		if ((data->stat.st_mode & S_IFMT) == S_IFCHR
+				|| (data->stat.st_mode & S_IFMT) == S_IFBLK)
+		{
+			printer_long_padding_left(&(long_state->tree->state->stdout),
+					major(data->stat.st_rdev), pad);
+			printer_char(&(long_state->tree->state->stdout), ',');
+		}
+		else
+		{
+			(pad.size)++;
+			printer_padding(&(long_state->tree->state->stdout), 0, &pad);
+		}
+	}
+	pad.size = (long_state->max_minor >= 0
+			&& long_state->max_minor > long_state->max_size) ?
+			4 : printer_long_length(long_state->max_size);
+	print_part2(long_state, data, &pad);
 }

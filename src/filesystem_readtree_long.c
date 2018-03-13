@@ -95,8 +95,16 @@ static void	foreach_first_pass(t_btree *node, void *param)
 	long_state->total += data->stat.st_blocks;
 	if (data->stat.st_nlink > long_state->max_links)
 		long_state->max_links = data->stat.st_nlink;
-	if ((unsigned long)(data->stat.st_size) > long_state->max_size)
-		long_state->max_size = (unsigned long)(data->stat.st_size);
+	if ((data->stat.st_mode & S_IFMT) == S_IFCHR
+			|| (data->stat.st_mode & S_IFMT) == S_IFBLK)
+	{
+		if (major(data->stat.st_rdev) > long_state->max_major)
+			long_state->max_major = major(data->stat.st_rdev);
+		if (minor(data->stat.st_rdev) > long_state->max_minor)
+			long_state->max_minor = minor(data->stat.st_rdev);
+	}
+	else if (data->stat.st_size > long_state->max_size)
+		long_state->max_size = data->stat.st_size;
 	foreach_first_pass_aux(long_state, data);
 }
 
@@ -108,6 +116,8 @@ void		filesystem_readtree_long(t_fs_tree *tree)
 	{
 		ft_memset(&long_state, 0, sizeof(long_state));
 		long_state.tree = tree;
+		long_state.max_size = -1;
+		long_state.max_major = -1;
 		btree_each(tree->tree, foreach_first_pass, (void *)&long_state);
 		if (tree->level > 0)
 		{
