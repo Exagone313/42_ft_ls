@@ -40,6 +40,8 @@ static void	foreach_long(t_btree *node, void *param)
 {
 	t_fs_handle		*data;
 	t_ls_long		*long_state;
+	char			linkpath[PATH_MAX];
+	ssize_t			r;
 
 	long_state = (t_ls_long *)param;
 	data = (t_fs_handle	*)(node->data);
@@ -51,6 +53,12 @@ static void	foreach_long(t_btree *node, void *param)
 			filepath_name_write(long_state->tree->state, data->filepath);
 		else
 			printer_str(&(long_state->tree->state->stdout), data->filepath);
+		if (data->stat.st_mode & S_IFLNK && (r = readlink(data->filepath,
+						linkpath, PATH_MAX)) > 0)
+		{
+			printer_bin(&(long_state->tree->state->stdout), " -> ", 4);
+			printer_bin(&(long_state->tree->state->stdout), linkpath, r);
+		}
 		printer_endl(&(long_state->tree->state->stdout));
 		if (!(long_state->tree->state->double_endl_prefix))
 			long_state->tree->state->double_endl_prefix = 1;
