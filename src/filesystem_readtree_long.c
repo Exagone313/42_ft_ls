@@ -72,13 +72,13 @@ static void	foreach_first_pass_aux(t_ls_long *long_state, t_fs_handle *data)
 	size_t			i;
 
 	if ((passwd = getpwuid(data->stat.st_uid)))
-		i = strlen(passwd->pw_name);
+		i = ft_strlen(passwd->pw_name);
 	else
 		i = printer_uint_length(data->stat.st_uid);
 	if (i > long_state->max_user_length)
 		long_state->max_user_length = i;
 	if ((group = getgrgid(data->stat.st_gid)))
-		i = strlen(group->gr_name);
+		i = ft_strlen(group->gr_name);
 	else
 		i = printer_uint_length(data->stat.st_gid);
 	if (i > long_state->max_group_length)

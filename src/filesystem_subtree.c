@@ -26,11 +26,11 @@ static void	directory_tree_add(t_fs_handle *parent, t_fs_tree *subtree,
 		filesystem_savetree(subtree, ent->d_name, 0);
 		return ;
 	}
-	strncpy(filepath, parent->filepath, PATH_MAX);
-	i = strlen(filepath);
-	strncpy(filepath + i, "/", PATH_MAX - i);
-	i = strlen(filepath);
-	strncpy(filepath + i, ent->d_name, PATH_MAX - i);
+	ft_strncpy(filepath, parent->filepath, PATH_MAX);
+	i = ft_strlen(filepath);
+	ft_strncpy(filepath + i, "/", PATH_MAX - i);
+	i = ft_strlen(filepath);
+	ft_strncpy(filepath + i, ent->d_name, PATH_MAX - i);
 	filesystem_savetree(subtree, filepath, 0);
 }
 
