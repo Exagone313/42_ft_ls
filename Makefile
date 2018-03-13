@@ -19,7 +19,6 @@ SRC := \
 	filesystem_subtree.c \
 	ft_ls_readpath.c \
 	ft_ls_error.c \
-	ft_ls_itoan.c \
 	printer/printer_bin.c \
 	printer/printer_bin_padding_left.c \
 	printer/printer_bin_padding_right.c \
