@@ -1,20 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls_error.h                                      :+:      :+:    :+:   */
+/*   filesystem_basename.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/17 16:44:16 by emartine          #+#    #+#             */
-/*   Updated: 2018/01/17 16:44:17 by emartine         ###   ########.fr       */
+/*   Created: 2018/03/13 16:23:08 by emartine          #+#    #+#             */
+/*   Updated: 2018/03/13 16:23:09 by emartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LS_ERROR_H
-# define FT_LS_ERROR_H
+#include <stdlib.h>
+#include "filesystem_basename.h"
 
-# include "filesystem.h"
+char	*filesystem_basename(char *filepath)
+{
+	size_t	i;
 
-void	ft_ls_error(t_ls_state *state, char *file);
-
-#endif
+	i = 0;
+	while (filepath[i])
+	{
+		if (filepath[i] == '/')
+		{
+			filepath += i + 1;
+			i = 0;
+		}
+		else
+			i++;
+	}
+	return (filepath);
+}

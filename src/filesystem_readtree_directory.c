@@ -16,19 +16,17 @@
 #include "ft_ls_error.h"
 #include "main.h"
 #include "filesystem_readtree_directory.h"
+#include "filesystem_basename.h"
 
-static void	directory_read(t_fs_tree *tree, t_fs_handle *data, DIR *dir)
+static void	directory_read(t_fs_tree *tree, t_fs_handle *data)
 {
 	t_fs_tree	subtree;
+	DIR			*dir;
 
-	if (tree->level > 0 || tree->length > 1)
+	if (!(dir = opendir(data->filepath)))
 	{
-		if (tree->state->double_endl_prefix)
-			printer_endl(&(tree->state->stdout));
-		else
-			tree->state->double_endl_prefix = 1;
-		printer_str(&(tree->state->stdout), data->filepath);
-		printer_bin(&(tree->state->stdout), ":\n", 2);
+		ft_ls_error(tree->state, filesystem_basename(data->filepath));
+		return ;
 	}
 	filesystem_subtree(&subtree, tree, data, dir);
 	if (tree->state->params & PARAM_LONG_FORMAT)
@@ -47,7 +45,6 @@ static void	foreach_directory(t_btree *node, void *param)
 {
 	t_fs_handle	*data;
 	t_fs_tree	*tree;
-	DIR			*dir;
 
 	tree = (t_fs_tree *)param;
 	data = (t_fs_handle	*)(node->data);
@@ -56,12 +53,16 @@ static void	foreach_directory(t_btree *node, void *param)
 		if (tree->level > 0 && (ft_strcmp(data->filepath, ".") == 0
 				|| ft_strcmp(data->filepath, "..") == 0))
 			return ;
-		if (!(dir = opendir(data->filepath)))
+		if (tree->level > 0 || tree->length > 1)
 		{
-			ft_ls_error(tree->state->argv0, data->filepath);
-			return ;
+			if (tree->state->double_endl_prefix)
+				printer_endl(&(tree->state->stdout));
+			else
+				tree->state->double_endl_prefix = 1;
+			printer_str(&(tree->state->stdout), data->filepath);
+			printer_bin(&(tree->state->stdout), ":\n", 2);
 		}
-		directory_read(tree, data, dir);
+		directory_read(tree, data);
 	}
 }
 

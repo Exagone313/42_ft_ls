@@ -14,24 +14,7 @@
 #include "libft.h"
 #include "filesystem.h"
 #include "main.h"
-
-static void	filepath_name_write(t_ls_state *state, char *filepath)
-{
-	size_t	i;
-
-	i = 0;
-	while (filepath[i])
-	{
-		if (filepath[i] == '/')
-		{
-			filepath += i + 1;
-			i = 0;
-		}
-		else
-			i++;
-	}
-	printer_str(&(state->stdout), filepath);
-}
+#include "filesystem_basename.h"
 
 static void	foreach_short(t_btree *node, void *param)
 {
@@ -45,7 +28,8 @@ static void	foreach_short(t_btree *node, void *param)
 		if (!data->hidden)
 		{
 			if (tree->level > 0)
-				filepath_name_write(tree->state, data->filepath);
+				printer_str(&(tree->state->stdout),
+						filesystem_basename(data->filepath));
 			else
 				printer_str(&(tree->state->stdout), data->filepath);
 			printer_endl(&(tree->state->stdout));

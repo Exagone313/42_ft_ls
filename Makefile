@@ -8,6 +8,7 @@ SRC := \
 	btree/btree_create.c \
 	btree/btree_each.c \
 	main.c \
+	filesystem_basename.c \
 	filesystem_hidden.c \
 	filesystem_initargs.c \
 	filesystem_readargs.c \

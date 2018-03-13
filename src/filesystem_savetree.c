@@ -27,7 +27,7 @@ void			filesystem_savetree(t_fs_tree *tree, char *arg, int hidden)
 	{
 		if (tree->level == 0 && !(tree->state->arg_error))
 			tree->state->arg_error = 1;
-		ft_ls_error(tree->state->argv0, arg);
+		ft_ls_error(tree->state, arg);
 	}
 	else
 	{
