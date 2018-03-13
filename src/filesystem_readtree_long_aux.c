@@ -24,23 +24,23 @@
 
 #define SIXMONTHS ((365 / 2) * 86400)
 
-static char	filetype(mode_t mode)
+static char	filetype(mode_t fmt)
 {
-	if (mode & S_IFIFO)
-		return ('p');
-	if (mode & S_IFCHR)
-		return ('c');
-	if (mode & S_IFDIR)
+	if (fmt == S_IFDIR)
 		return ('d');
-	if (mode & S_IFBLK)
+	if (fmt == S_IFCHR)
+		return ('c');
+	if (fmt == S_IFBLK)
 		return ('b');
-	if (mode & S_IFREG)
+	if (fmt == S_IFREG)
 		return ('-');
-	if (mode & S_IFLNK)
+	if (fmt == S_IFLNK)
 		return ('l');
-	if (mode & S_IFSOCK)
+	if (fmt == S_IFSOCK)
 		return ('s');
-	if (mode & S_IFWHT)
+	if (fmt == S_IFIFO)
+		return ('p');
+	if (fmt == S_IFWHT)
 		return ('w');
 	return ('?');
 }
@@ -51,7 +51,7 @@ static char	filetype(mode_t mode)
 
 static void	print_mode(t_ls_state *state, mode_t mode)
 {
-	printer_char(&(state->stdout), filetype(mode));
+	printer_char(&(state->stdout), filetype(mode & S_IFMT));
 	printer_char(&(state->stdout), mode & S_IRUSR ? 'r' : '-');
 	printer_char(&(state->stdout), mode & S_IWUSR ? 'w' : '-');
 	if (mode & S_ISUID)
