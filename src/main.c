@@ -19,7 +19,7 @@
 #include "sort.h"
 
 #define INVALID_OPTION_STR_1 ": invalid option -- '?'\n"
-#define INVALID_OPTION_STR_2 "Available options: -a -A -d -l -r -R -t\n"
+#define INVALID_OPTION_STR_2 "Available options: -a -A -l -r -R -t\n"
 #define INVALID_OPTION_STR INVALID_OPTION_STR_1 INVALID_OPTION_STR_2
 
 static int	parse_arg(char arg, int *result)
@@ -37,8 +37,6 @@ static int	parse_arg(char arg, int *result)
 		*result |= PARAM_SORT_REVERSE;
 	else if (arg == 't')
 		*result |= PARAM_SORT_MTIME;
-	else if (arg == 'd')
-		*result |= PARAM_DIRECTORY;
 	else if (arg == 'A')
 		*result |= PARAM_SHOW_HIDDEN;
 	else if (arg != '1')
