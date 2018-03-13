@@ -16,7 +16,7 @@
 # include <limits.h>
 # include <stdlib.h>
 
-# define PRINTER_BUFFER_SIZE PIPE_BUF
+# define PRINTER_BUFFER_SIZE 4096
 
 typedef struct	s_printer_handle
 {
