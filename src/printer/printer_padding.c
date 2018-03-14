@@ -17,7 +17,10 @@ void	printer_padding(t_printer_handle *handle, size_t size,
 {
 	size_t	i;
 
-	i = pad->size - size;
+	if (pad->size < size)
+		i = 0;
+	else
+		i = pad->size - size;
 	while (i-- > 0)
 		printer_char(handle, pad->ch);
 }

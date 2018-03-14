@@ -22,20 +22,18 @@ static void	foreach_short(t_btree *node, void *param)
 
 	tree = (t_fs_tree *)param;
 	data = (t_fs_handle	*)(node->data);
-	if (tree->level > 0 || !((data->stat.st_mode & S_IFDIR)
+	if ((tree->level > 0 || !((data->stat.st_mode & S_IFDIR)
 			|| ((filesystem_stat_mode(data->filepath) & S_IFMT) == S_IFDIR)))
+			&& !data->hidden)
 	{
-		if (!data->hidden)
-		{
-			if (tree->level > 0)
-				printer_str(&(tree->state->stdout),
-						filesystem_basename(data->filepath));
-			else
-				printer_str(&(tree->state->stdout), data->filepath);
-			printer_endl(&(tree->state->stdout));
-			if (!(tree->state->double_endl_prefix))
-				tree->state->double_endl_prefix = 1;
-		}
+		if (tree->level > 0)
+			printer_str(&(tree->state->stdout),
+					filesystem_basename(data->filepath));
+		else
+			printer_str(&(tree->state->stdout), data->filepath);
+		printer_endl(&(tree->state->stdout));
+		if (!(tree->state->double_endl_prefix))
+			tree->state->double_endl_prefix = 1;
 	}
 }
 

@@ -74,13 +74,13 @@ static void	foreach_first_pass_aux(t_ls_long *long_state, t_fs_handle *data)
 	if ((passwd = getpwuid(data->stat.st_uid)))
 		i = ft_strlen(passwd->pw_name);
 	else
-		i = printer_uint_length(data->stat.st_uid);
+		i = printer_int_length(data->stat.st_uid);
 	if (i > long_state->max_user_length)
 		long_state->max_user_length = i;
 	if ((group = getgrgid(data->stat.st_gid)))
 		i = ft_strlen(group->gr_name);
 	else
-		i = printer_uint_length(data->stat.st_gid);
+		i = printer_int_length(data->stat.st_gid);
 	if (i > long_state->max_group_length)
 		long_state->max_group_length = i;
 }
@@ -92,6 +92,9 @@ static void	foreach_first_pass(t_btree *node, void *param)
 
 	long_state = (t_ls_long *)param;
 	data = (t_fs_handle	*)(node->data);
+	if (!((long_state->tree->level > 0 || !(data->stat.st_mode & S_IFDIR))
+			&& !data->hidden))
+		return ;
 	long_state->total += data->stat.st_blocks;
 	if (data->stat.st_nlink > long_state->max_links)
 		long_state->max_links = data->stat.st_nlink;
