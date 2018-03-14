@@ -17,6 +17,7 @@ SRC := \
 	filesystem_readtree_long_aux.c \
 	filesystem_readtree_short.c \
 	filesystem_savetree.c \
+	filesystem_stat_mode.c \
 	filesystem_subtree.c \
 	ft_ls_readpath.c \
 	ft_ls_error.c \

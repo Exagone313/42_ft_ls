@@ -97,5 +97,9 @@ int						filesystem_hidden(int params, char *filename);
 ** get basename from a path (not copied)
 */
 char					*filesystem_basename(char *filepath);
+/*
+** stat path (not lstat) and return mode, 0 if failed
+*/
+mode_t					filesystem_stat_mode(char *path);
 
 #endif

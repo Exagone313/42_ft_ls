@@ -22,7 +22,8 @@ static void	foreach_short(t_btree *node, void *param)
 
 	tree = (t_fs_tree *)param;
 	data = (t_fs_handle	*)(node->data);
-	if (tree->level > 0 || !(data->stat.st_mode & S_IFDIR))
+	if (tree->level > 0 || !((data->stat.st_mode & S_IFDIR)
+			|| ((filesystem_stat_mode(data->filepath) & S_IFMT) == S_IFDIR)))
 	{
 		if (!data->hidden)
 		{
