@@ -70,6 +70,7 @@ $(NAME): $(OBJ) libft/libft.a
 
 clean:
 	$(RM) $(OBJ) $(OBJ:.o=.d)
+	$(MAKE) -C libft clean
 
 fclean:
 	$(MAKE) clean
