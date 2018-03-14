@@ -15,15 +15,15 @@ CFLAGS += -MMD -MP
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	ar rc $@ $^
-	ranlib $@
+	$(AR) rcs $@ $^
 
 -include $(OBJ:.o=.d)
 
 clean:
 	$(RM) $(OBJ) $(OBJ:.o=.d)
 
-fclean: clean
+fclean:
+	$(MAKE) clean
 	$(RM) $(NAME)
 
 re: fclean all
