@@ -93,5 +93,9 @@ typedef struct			s_ls_long
 ** check if file is hidden
 */
 int						filesystem_hidden(int params, char *filename);
+/*
+** get basename from a path (not copied)
+*/
+char					*filesystem_basename(char *filepath);
 
 #endif

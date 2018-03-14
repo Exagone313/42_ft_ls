@@ -16,7 +16,6 @@
 #include "ft_ls_error.h"
 #include "main.h"
 #include "filesystem_readtree_directory.h"
-#include "filesystem_basename.h"
 
 static void	directory_read(t_fs_tree *tree, t_fs_handle *data)
 {

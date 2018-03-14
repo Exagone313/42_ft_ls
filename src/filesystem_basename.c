@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "filesystem_basename.h"
+#include "filesystem.h"
 
 char	*filesystem_basename(char *filepath)
 {
